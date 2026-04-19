@@ -1,0 +1,43 @@
+<script type="text/javascript">
+RED.nodes.registerType('saia-write', {
+    category: 'SAIA SBus',
+    color: '#E87722',
+    icon: 'font-awesome/fa-upload',
+    inputs: 1, outputs: 1,
+    paletteLabel: 'SAIA Write',
+    label: function () { return this.name || 'Write ' + (this.itemType||'register') + '[' + (this.address||0) + ']'; },
+    defaults: {
+        name:     { value: '' },
+        server:   { value: '', type: 'saia-config', required: true },
+        itemType: { value: 'register' },
+        address:  { value: 0, validate: RED.validators.number() }
+    }
+});
+</script>
+<script type="text/html" data-template-name="saia-write">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Connection</label>
+    <input type="text" id="node-input-server">
+  </div>
+  <div class="form-row">
+    <label for="node-input-itemType"><i class="fa fa-list"></i> Item Type</label>
+    <select id="node-input-itemType">
+      <option value="flag">Flag (F)</option>
+      <option value="output">Output (O)</option>
+      <option value="register" selected>Register (R)</option>
+      <option value="timer">Timer (T)</option>
+      <option value="counter">Counter (C)</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-address"><i class="fa fa-map-marker"></i> Address</label>
+    <input type="number" id="node-input-address" min="0" placeholder="0">
+  </div>
+</script>
+<script type="text/html" data-help-name="saia-write">
+  <p>Writes to a SAIA PCD via EtherSBus. Set <code>msg.payload</code> to the value (or array) to write.</p>
+</script>

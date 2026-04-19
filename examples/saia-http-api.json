@@ -1,0 +1,140 @@
+[
+  {
+    "id": "tab_saia_api",
+    "type": "tab",
+    "label": "SAIA HTTP-API",
+    "info": "REST-Endpunkte für das React-Dashboard.\nGET  /saia/read?type=register&addr=0&count=1\nPOST /saia/write  {type, addr, value}"
+  },
+  {
+    "id": "cfg_saia",
+    "type": "saia-config",
+    "name": "SAIA PCD",
+    "host": "192.168.1.100",
+    "port": 5050,
+    "station": 1,
+    "timeout": 2000
+  },
+
+  {
+    "id": "http_read_in",
+    "type": "http in",
+    "z": "tab_saia_api",
+    "name": "GET /saia/read",
+    "url": "/saia/read",
+    "method": "get",
+    "x": 120, "y": 80,
+    "wires": [["fn_read_parse"]]
+  },
+  {
+    "id": "fn_read_parse",
+    "type": "function",
+    "z": "tab_saia_api",
+    "name": "Query → msg",
+    "func": "msg.itemType = msg.req.query.type  || 'register';\nmsg.address  = parseInt(msg.req.query.addr)  || 0;\nmsg.count    = parseInt(msg.req.query.count) || 1;\nreturn msg;",
+    "x": 310, "y": 80,
+    "wires": [["saia_read_api"]]
+  },
+  {
+    "id": "saia_read_api",
+    "type": "saia-read",
+    "z": "tab_saia_api",
+    "name": "Read",
+    "server": "cfg_saia",
+    "itemType": "register",
+    "address": 0,
+    "count": 1,
+    "x": 490, "y": 80,
+    "wires": [["fn_read_response"]]
+  },
+  {
+    "id": "fn_read_response",
+    "type": "function",
+    "z": "tab_saia_api",
+    "name": "→ JSON",
+    "func": "msg.payload = { value: msg.payload, type: msg.itemType, addr: msg.address };\nmsg.statusCode = 200;\nreturn msg;",
+    "x": 650, "y": 80,
+    "wires": [["http_read_out"]]
+  },
+  {
+    "id": "http_read_out",
+    "type": "http response",
+    "z": "tab_saia_api",
+    "name": "Response",
+    "x": 810, "y": 80,
+    "wires": []
+  },
+
+  {
+    "id": "http_write_in",
+    "type": "http in",
+    "z": "tab_saia_api",
+    "name": "POST /saia/write",
+    "url": "/saia/write",
+    "method": "post",
+    "x": 120, "y": 200,
+    "wires": [["fn_write_parse"]]
+  },
+  {
+    "id": "fn_write_parse",
+    "type": "function",
+    "z": "tab_saia_api",
+    "name": "Body → msg",
+    "func": "const b = msg.payload;\nmsg.itemType = b.type  || 'register';\nmsg.address  = parseInt(b.addr) || 0;\nmsg.payload  = b.value;\nreturn msg;",
+    "x": 310, "y": 200,
+    "wires": [["saia_write_api"]]
+  },
+  {
+    "id": "saia_write_api",
+    "type": "saia-write",
+    "z": "tab_saia_api",
+    "name": "Write",
+    "server": "cfg_saia",
+    "itemType": "register",
+    "address": 0,
+    "x": 490, "y": 200,
+    "wires": [["fn_write_response"]]
+  },
+  {
+    "id": "fn_write_response",
+    "type": "function",
+    "z": "tab_saia_api",
+    "name": "→ JSON",
+    "func": "msg.payload = { ok: true };\nmsg.statusCode = 200;\nreturn msg;",
+    "x": 650, "y": 200,
+    "wires": [["http_write_out"]]
+  },
+  {
+    "id": "http_write_out",
+    "type": "http response",
+    "z": "tab_saia_api",
+    "name": "Response",
+    "x": 810, "y": 200,
+    "wires": []
+  },
+
+  {
+    "id": "http_err",
+    "type": "catch",
+    "z": "tab_saia_api",
+    "name": "Fehler",
+    "x": 490, "y": 320,
+    "wires": [["fn_err"]]
+  },
+  {
+    "id": "fn_err",
+    "type": "function",
+    "z": "tab_saia_api",
+    "name": "Error → JSON",
+    "func": "msg.payload = { ok: false, error: msg.error.message };\nmsg.statusCode = 500;\nreturn msg;",
+    "x": 660, "y": 320,
+    "wires": [["http_err_out"]]
+  },
+  {
+    "id": "http_err_out",
+    "type": "http response",
+    "z": "tab_saia_api",
+    "name": "Response",
+    "x": 820, "y": 320,
+    "wires": []
+  }
+]

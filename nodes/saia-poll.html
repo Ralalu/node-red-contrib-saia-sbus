@@ -1,0 +1,67 @@
+<script type="text/javascript">
+RED.nodes.registerType('saia-poll', {
+    category: 'SAIA SBus',
+    color: '#5BAD6E',
+    icon: 'font-awesome/fa-refresh',
+    inputs: 1, outputs: 1,
+    paletteLabel: 'SAIA Poll',
+    label: function () { return this.name || 'Poll ' + (this.itemType||'register') + '[' + (this.address||0) + '] @' + (this.interval||1000) + 'ms'; },
+    defaults: {
+        name:        { value: '' },
+        server:      { value: '', type: 'saia-config', required: true },
+        itemType:    { value: 'register' },
+        address:     { value: 0,    validate: RED.validators.number() },
+        count:       { value: 1,    validate: RED.validators.number() },
+        interval:    { value: 1000, validate: RED.validators.number() },
+        topic:       { value: '' },
+        onlyChanges: { value: false }
+    }
+});
+</script>
+<script type="text/html" data-template-name="saia-poll">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Connection</label>
+    <input type="text" id="node-input-server">
+  </div>
+  <div class="form-row">
+    <label for="node-input-itemType"><i class="fa fa-list"></i> Item Type</label>
+    <select id="node-input-itemType">
+      <option value="flag">Flag (F)</option>
+      <option value="input">Input (I)</option>
+      <option value="output">Output (O)</option>
+      <option value="register" selected>Register (R)</option>
+      <option value="timer">Timer (T)</option>
+      <option value="counter">Counter (C)</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-address"><i class="fa fa-map-marker"></i> Address</label>
+    <input type="number" id="node-input-address" min="0" placeholder="0">
+  </div>
+  <div class="form-row">
+    <label for="node-input-count"><i class="fa fa-th"></i> Count</label>
+    <input type="number" id="node-input-count" min="1" placeholder="1">
+  </div>
+  <div class="form-row">
+    <label for="node-input-interval"><i class="fa fa-clock-o"></i> Interval (ms)</label>
+    <input type="number" id="node-input-interval" min="100" placeholder="1000">
+  </div>
+  <div class="form-row">
+    <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+    <input type="text" id="node-input-topic" placeholder="saia/register/0">
+  </div>
+  <div class="form-row">
+    <label for="node-input-onlyChanges"><i class="fa fa-filter"></i> Only Changes</label>
+    <input type="checkbox" id="node-input-onlyChanges" style="width:auto; margin-left:0;">
+    <span style="margin-left:8px; font-size:12px; color:#666;">Send only when value changes</span>
+  </div>
+</script>
+<script type="text/html" data-help-name="saia-poll">
+  <p>Cyclically polls a SAIA PCD item. <code>msg.payload</code> contains the current value.</p>
+  <p>An incoming message triggers an immediate extra poll.</p>
+  <p>Large reads are split automatically into multiple telegrams and reassembled. Confirmed chunk sizes are 32 for 32-bit values and 128 for bit values.</p>
+</script>

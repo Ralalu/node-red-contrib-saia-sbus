@@ -1,0 +1,57 @@
+<script type="text/javascript">
+RED.nodes.registerType('saia-read', {
+    category: 'SAIA SBus',
+    color: '#1F8EBB',
+    icon: 'font-awesome/fa-download',
+    inputs: 1, outputs: 1,
+    paletteLabel: 'SAIA Read',
+    label: function () { return this.name || 'Read ' + (this.itemType||'register') + '[' + (this.address||0) + ']'; },
+    defaults: {
+        name:     { value: '' },
+        server:   { value: '', type: 'saia-config', required: true },
+        itemType: { value: 'register' },
+        address:  { value: 0, validate: RED.validators.number() },
+        count:    { value: 1, validate: RED.validators.number() },
+        topic:    { value: '' }
+    }
+});
+</script>
+<script type="text/html" data-template-name="saia-read">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Connection</label>
+    <input type="text" id="node-input-server">
+  </div>
+  <div class="form-row">
+    <label for="node-input-itemType"><i class="fa fa-list"></i> Item Type</label>
+    <select id="node-input-itemType">
+      <option value="flag">Flag (F)</option>
+      <option value="input">Input (I)</option>
+      <option value="output">Output (O)</option>
+      <option value="register" selected>Register (R)</option>
+      <option value="timer">Timer (T)</option>
+      <option value="counter">Counter (C)</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-address"><i class="fa fa-map-marker"></i> Address</label>
+    <input type="number" id="node-input-address" min="0" placeholder="0">
+  </div>
+  <div class="form-row">
+    <label for="node-input-count"><i class="fa fa-th"></i> Count</label>
+    <input type="number" id="node-input-count" min="1" placeholder="1">
+  </div>
+  <div class="form-row">
+    <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+    <input type="text" id="node-input-topic" placeholder="saia/register/0">
+  </div>
+</script>
+<script type="text/html" data-help-name="saia-read">
+  <p>Reads one or more items from a SAIA PCD via EtherSBus (UDP).</p>
+  <p>Trigger with any incoming message. Override via <code>msg.itemType</code>, <code>msg.address</code>, <code>msg.count</code>.</p>
+  <p><code>msg.payload</code> contains the value, or an array if count &gt; 1.</p>
+  <p>Large reads are split automatically into multiple telegrams and reassembled. Confirmed chunk sizes are 32 for 32-bit values and 128 for bit values.</p>
+</script>

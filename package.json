@@ -1,0 +1,36 @@
+{
+  "name": "node-red-contrib-saia-sbus",
+  "version": "1.0.0",
+  "description": "Node-RED nodes for SAIA PCD EtherSBus communication (Flags, Registers, Inputs, Outputs)",
+  "keywords": [
+    "node-red",
+    "saia",
+    "sbus",
+    "ethersbus",
+    "pcd",
+    "plc",
+    "automation",
+    "hvac",
+    "building-automation"
+  ],
+  "author": "Ralalu",
+  "license": "MIT",
+  "main": "nodes/saia-sbus.js",
+  "node-red": {
+    "version": ">=2.0.0",
+    "nodes": {
+      "saia-config": "nodes/saia-config.js",
+      "saia-read": "nodes/saia-read.js",
+      "saia-write": "nodes/saia-write.js",
+      "saia-poll": "nodes/saia-poll.js"
+    }
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ralalu/node-red-contrib-saia-sbus"
+  }
+}
