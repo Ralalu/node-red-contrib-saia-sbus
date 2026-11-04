@@ -8,14 +8,18 @@ Based on protocol reverse-engineering.
 
 ## Installation
 
+**Via the Node-RED Palette Manager (recommended):**
+Menu → *Manage palette* → *Install* → search for `node-red-contrib-saia-sbus`.
+
+**Via npm**, from your Node-RED user directory (usually `~/.node-red`):
+
 ```bash
-# Copy the folder node-red-contrib-saia-sbus to node-red/node_modules (usually ~/.node-red/node_modules)
-
-# From your Node-RED user directory (usually ~/.node-red)
 npm install node-red-contrib-saia-sbus
-
-# TODO: Or via the Node-RED Palette Manager (search for "saia-sbus")
 ```
+
+Then restart Node-RED.
+
+Requirements: Node-RED >= 2.0, Node.js >= 14.
 
 ---
 
@@ -124,14 +128,14 @@ msg.topic; // 'saia/register/0'
 
 ## Example Flow
 
-Import `examples/saia-examples.json` via **Menu → Import → Clipboard** in Node-RED.
+After installation the example is available in Node-RED via
+**Menu → Import → Examples → node-red-contrib-saia-sbus**
+(source: [`examples/saia-http-api.json`](examples/saia-http-api.json)).
 
-Included examples:
+It exposes a small HTTP API on top of the SAIA nodes:
 
-1. Read a single register on inject
-2. Write a value to a register
-3. Poll a flag every 500 ms (on-change only)
-4. Read 5 consecutive registers
+- `GET  /saia/read?type=register&addr=0&count=1` – read items via `saia-read`
+- `POST /saia/write` with JSON body `{ "type", "addr", "value" }` – write items via `saia-write`
 
 ---
 

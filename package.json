@@ -11,7 +11,10 @@
     "plc",
     "automation",
     "hvac",
-    "building-automation"
+    "building-automation",
+    "node-red-contrib",
+    "saia-burgess",
+    "sbus-udp"
   ],
   "author": "Ralalu",
   "license": "MIT",
@@ -25,12 +28,21 @@
       "saia-poll": "nodes/saia-poll.js"
     }
   },
-  "dependencies": {},
   "engines": {
     "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Ralalu/node-red-contrib-saia-sbus"
-  }
+  },
+  "homepage": "https://github.com/Ralalu/node-red-contrib-saia-sbus#readme",
+  "bugs": {
+    "url": "https://github.com/Ralalu/node-red-contrib-saia-sbus/issues"
+  },
+  "files": [
+    "nodes/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ]
 }
