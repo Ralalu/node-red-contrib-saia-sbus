@@ -128,11 +128,13 @@ msg.topic; // 'saia/register/0'
 
 ## Example Flow
 
-After installation the example is available in Node-RED via
-**Menu → Import → Examples → node-red-contrib-saia-sbus**
-(source: [`examples/saia-http-api.json`](examples/saia-http-api.json)).
+After installation the examples are available in Node-RED via
+**Menu → Import → Examples → node-red-contrib-saia-sbus**.
 
-It exposes a small HTTP API on top of the SAIA nodes:
+[`examples/saia-poll.json`](examples/saia-poll.json) polls flag F100 every 500 ms (on change only) and
+registers R0..R4 every 2 s, with an inject node that triggers an immediate extra poll.
+
+[`examples/saia-http-api.json`](examples/saia-http-api.json) exposes a small HTTP API on top of the SAIA nodes:
 
 - `GET  /saia/read?type=register&addr=0&count=1` – read items via `saia-read`
 - `POST /saia/write` with JSON body `{ "type", "addr", "value" }` – write items via `saia-write`
